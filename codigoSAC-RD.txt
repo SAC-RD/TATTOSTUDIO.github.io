@@ -1,0 +1,346 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAC-RD | Tatuajes y Piercings</title>
+    <style>
+        body {
+            font-family: ALGERIAN, sans-serif;
+            background-color: #2F4F4F; /* Morado oscuro llamativo */
+            color: #50C878;
+            margin: 0;
+            padding: 0;
+            display: flex; /* Para el layout del menú lateral */
+            background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YmFja2dyb3VuZCUyMGNvbG9yfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60'); /* Imagen de fondo */
+            background-size: cover;
+            background-blend-mode: multiply; /* Oscurecer la imagen con el color de fondo */
+        }
+        .sidebar {
+            background-color: rgba(19, 78, 194, 0.8); /* Azul oscuro semi-transparente */
+            padding: 20px;
+            width: 200px; /* Ancho del menú lateral */
+            position: fixed; /* Para que se quede fijo al hacer scroll */
+            height: 100%;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Alinea los elementos a la izquierda */
+        }
+        .sidebar h2 {
+            color: #000000; /* Naranja brillante */
+            text-shadow: 0 0 10px #00FFFF; /* Resplandor naranja */
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            color: #4B0082; /* Cian brillante */
+            text-decoration: none;
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Para que los enlaces ocupen todo el ancho */
+            text-align: left; /* Alinea el texto a la izquierda */
+            text-shadow: 0 0 8px #00FFFF; /* Resplandor cian */
+        }
+        .sidebar a:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #ffeb3b; /* Amarillo brillante */
+            text-shadow: 0 0 8px #fdd835; /* Resplandor amarillo */
+        }
+        .content {
+            flex-grow: 1; /* El contenido principal ocupa el espacio restante */
+            padding: 40px 20px;
+            margin-left: 220px; /* Para dejar espacio al menú lateral */
+            max-width: 1000px;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente para el contenido */
+            border-radius: 8px;
+        }
+        header {
+            background-color: transparent; /* Header transparente ahora */
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+            min-height: 100vh; /* Asegura que ocupe al menos la altura de la pantalla */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            color: #aa1515; /* Naranja brillante */
+            text-shadow: 0 0 10px #2912ac; /* Resplandor naranja */
+        }
+        header p {
+            color: #b3e5fc; /* Azul claro */
+            text-shadow: 0 0 5px #81d4fa; /* Resplandor azul claro */
+        }
+        section {
+            padding: 40px 0;
+            margin-bottom: 0; /* Reducimos el margen inferior */
+            background-color: transparent; /* Sección transparente */
+            border-radius: 8px;
+            min-height: 100vh; /* Asegura que cada sección ocupe al menos la altura de la pantalla */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        section h2 {
+            color: #d500f9; /* Rosa brillante */
+            text-shadow: 0 0 8px #e040fb; /* Resplandor rosa */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .service {
+            background-color: rgba(255, 145, 0, 0.7); /* Naranja semi-transparente */
+            padding: 20px;
+            border-radius: 8px;
+            width: 250px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .service:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .service h3 {
+            color: #fff;
+            margin-top: 0;
+            text-shadow: 0 0 5px #bf360c; /* Sombra naranja oscura */
+        }
+        .service p {
+            color: #eee;
+            font-size: 0.9em;
+        }
+        .service-details {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semi-transparente */
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .service-details img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .service-button {
+            background-color: #ffab40; /* Naranja brillante */
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .service-button:hover {
+            background-color: #f57c00; /* Naranja más oscuro */
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #ccc;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed; /* Fija el pie de página en la parte inferior */
+            bottom: 0;
+            width: 100%;
+            margin-left: 0; /* Asegura que el pie de página ocupe todo el ancho */
+        }
+        /* Estilos específicos para la sección de contacto */
+        .contact-form {
+            background-color: rgba(67, 160, 71, 0.7); /* Verde semi-transparente */
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .contact-form h2 {
+            color: #aeea00; /* Verde lima brillante */
+            text-shadow: 0 0 8px #c6ff00; /* Resplandor verde lima */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #fff;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .submit-button {
+            background-color: #00c853; /* Verde esmeralda */
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .submit-button:hover {
+            background-color: #009688; /* Cian oscuro */
+        }
+        /* Estilos para la sección de galería */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>SAC-RD</h2>
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#galeria">Galería</a>
+        <a href="#contacto">Contacto</a>
+    </div>
+
+    <div class="content">
+        <header id="inicio">
+            <h1>SAC-RD | Tatuajes y Piercings</h1>
+            <p>Arte corporal con pasión y profesionalismo en México.</p>
+        </header>
+
+        <section id="servicios">
+            <h2>Nuestros Servicios</h2>
+            <div class="services">
+                <div class="service">
+                    <h3>Tatuajes Personalizados</h3>
+                    <p>Diseños únicos creados a tu gusto y estilo. Contamos con artistas expertos en diversos estilos.</p>
+                    <div class="service-details">
+                        <img src="t6.jpg" alt="Tatuajes personalizados">
+                        <p>Descripción detallada de los tatuajes personalizados. Aquí se pueden incluir ejemplos, estilos o información adicional sobre el proceso de creación de los diseños.</p>
+                    </div>
+                    <button class="service-button" onclick="toggleDetails(this)">Ver más</button>
+                </div>
+                <div class="service">
+                    <h3>Piercings Profesionales</h3>
+                    <p>Perforaciones seguras y estéticas realizadas con equipo esterilizado y joyería de alta calidad.</p>
+                    <div class="service-details">
+                        <img src="p6.jpg" alt="Piercings profesionales">
+                        <p>Descripción detallada de los piercings profesionales. Aquí se pueden incluir detalles sobre los tipos de perforaciones disponibles y el cuidado posterior.</p>
+                    </div>
+                    <button class="service-button" onclick="toggleDetails(this)">Ver más</button>
+                </div>
+                <div class="service">
+                    <h3>Cover-Ups</h3>
+                    <p>Transformamos tatuajes antiguos o no deseados en obras de arte nuevas y vibrantes.</p>
+                    <div class="service-details">
+                        <img src="t7.jpg" alt="Cover-ups">
+                        <p>Descripción detallada sobre el proceso de Cover-Ups. Explicación de cómo se cubren tatuajes no deseados y cómo logramos transformar un diseño antiguo.</p>
+                    </div>
+                    <button class="service-button" onclick="toggleDetails(this)">Ver más</button>
+                </div>
+                <div class="service">
+                    <h3>Retoques y Mantenimiento</h3>
+                    <p>Servicios para mantener tus tatuajes y piercings en perfectas condiciones a lo largo del tiempo.</p>
+                    <div class="service-details">
+                        <img src="t8.jpg" alt="Retoques y mantenimiento">
+                        <p>Información sobre los retoques y cómo los tatuajes y piercings deben mantenerse con el paso del tiempo.</p>
+                    </div>
+                    <button class="service-button" onclick="toggleDetails(this)">Ver más</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="galeria">
+            <h2>Galería</h2>
+            <div class="gallery">
+                <img src="t1.jpg" alt="Tatuaje 1">
+                <img src="t2.jpg" alt="Tatuaje 2">
+                <img src="t3.jpg" alt="Tatuaje 3">
+                <img src="t4.jpg" alt="Tatuaje 4">
+                <img src="t5.jpg" alt="Tatuaje 5">
+                <img src="p1.jpg" alt="Piercings 1">
+                <img src="p2.jpg" alt="Piercings 2">
+                <img src="p3.jpg" alt="Piercings 3">
+                <img src="p4.jpg" alt="Piercings 4">
+                <img src="p5.jpg" alt="Piercings 5">
+            </div>
+        </section>
+
+        <section id="contacto">
+            <h2>Contacto</h2>
+            <div class="contact-form">
+                <p style="color: #fff; text-align: center; margin-bottom: 20px; text-shadow: 1px 1px 2px #000;">¡Estamos listos para plasmar tu arte! Contáctanos para agendar tu cita o resolver tus dudas.</p>
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensaje">Mensaje:</label>
+                        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Enviar Mensaje</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 SAC-RD | Tatuajes y Piercings</p>
+    </footer>
+
+    <script>
+        function toggleDetails(button) {
+            const details = button.previousElementSibling;
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+                button.innerText = 'Ver menos';
+            } else {
+                details.style.display = 'none';
+                button.innerText = 'Ver más';
+            }
+        }
+    </script>
+</body>
+</html>
+      
+    
